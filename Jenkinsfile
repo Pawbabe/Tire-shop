@@ -1,6 +1,11 @@
 pipeline {
     agent any
-
+    environment {
+        registryCredential = 'dockerhubcred'   // Credential ID in Jenkins
+        imageName = 'jenkins_my-docker-image'   // Image name (be sure this matches your Docker Hub repo)
+        imageTag = 'latest'                    // Image tag
+        dockerHubRepo = 'pawbabe'    // Your Docker Hub username
+  }
     stages {
         stage('Checkout') {
             steps {
@@ -11,7 +16,16 @@ pipeline {
             steps {
                 sh 'mvn clean package' // Use 'mvn clean install' if using Maven
             }
-        }       
+        }   
+        stage('Converting Docker Image') {
+           steps {
+              echo 'Building Docker Image'
+              script {
+          // Build the Docker image and capture it into the dockerImage variable
+                  dockerImage = docker.build("${dockerHubRepo}/${imageName}:${imageTag}", ".")
+        }
+      }
+    }
   
     }
 
