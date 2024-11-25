@@ -34,10 +34,10 @@ pipeline {
               docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
                 // Push the image
                 dockerImage.push("${imageTag}")
+              }
+            }
           }
         }
-      }
-  
     }
 
 }
