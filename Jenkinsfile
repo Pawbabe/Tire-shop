@@ -26,6 +26,17 @@ pipeline {
         }
       }
     }
+        stage('Pushing Image') {
+          steps {
+            echo 'Pushing Docker Image to Docker Hub'
+            script {
+              // Authenticate to Docker Hub and push the built image
+              docker.withRegistry('https://registry.hub.docker.com', registryCredential) {
+                // Push the image
+                dockerImage.push("${imageTag}")
+          }
+        }
+      }
   
     }
 
